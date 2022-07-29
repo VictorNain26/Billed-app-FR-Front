@@ -25,6 +25,7 @@ export default () => {
       document.body.style.backgroundColor="#0E5AE5"
       new Login({ document, localStorage, onNavigate, PREVIOUS_LOCATION, store })
     } else if (pathname === ROUTES_PATH['Bills']) {
+      console.log('ALLO');
       rootDiv.innerHTML = ROUTES({ pathname, loading: true })
       const divIcon1 = document.getElementById('layout-icon1')
       const divIcon2 = document.getElementById('layout-icon2')
@@ -42,6 +43,7 @@ export default () => {
         rootDiv.innerHTML = ROUTES({ pathname, error })
       })
     } else if (pathname === ROUTES_PATH['NewBill']) {
+      console.log('ALLuile');
       rootDiv.innerHTML = ROUTES({ pathname, loading: true })
       new NewBill({ document, onNavigate, store, localStorage })
       const divIcon1 = document.getElementById('layout-icon1')
@@ -113,4 +115,3 @@ export default () => {
 
   return null
 }
-

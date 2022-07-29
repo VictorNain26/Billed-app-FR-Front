@@ -17,13 +17,38 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const input = document.querySelector(`input[data-testid="file"]`)
+    const file = input.files[0]
+    const fileExtension = file.type.split('/').pop().toLowerCase()
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
+
+    if (!['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+      if (document.querySelector('span.invalid-feedback')) {
+        document.querySelector('span.invalid-feedback').remove()
+      }
+      const error = document.createElement('span')
+
+      error.innerHTML = "Veuillez utiliser les extensions suivantes 'JPG, JPEG, PNG'"
+      error.classList.add('invalid-feedback')
+      error.setAttribute('data-testid', 'error-message')
+      input.parentNode.append(error)
+
+      input.classList.remove('blue-border')
+      input.classList.add('is-invalid')
+      input.value = ""
+      return
+    }
+
+    if (input.classList.contains('is-invalid')) {
+      input.classList.remove('is-invalid')
+      input.classList.add('blue-border')
+      document.querySelector('span.invalid-feedback').remove()
+    }
 
     this.store
       .bills()
