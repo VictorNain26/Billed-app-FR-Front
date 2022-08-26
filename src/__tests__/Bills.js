@@ -37,6 +37,23 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
+    describe("when I click on new bill button", () => {
+      test("Then handleClickNewBill method is called", () => {
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname })
+        }
+        document.body.innerHTML = BillsUI({ data: { bills } })
+        const bill = new Bill({
+          document, onNavigate, store: null, localStorage: window.localStorage
+        })
+        const newBill = screen.getByTestId('btn-new-bill')
+        const handleClickNewBill = jest.fn(bill.handleClickNewBill())
+        newBill.addEventListener('click', handleClickNewBill)
+        userEvent.click(newBill)
+
+        expect(handleClickNewBill).toHaveBeenCalled()
+       })
+    })
     describe("When I click on icon eye button", () => {
       test('Then open modal', () => {
         const onNavigate = (pathname) => {
@@ -62,21 +79,6 @@ describe("Given I am connected as an employee", () => {
         const modale = document.getElementById('modaleFile')
         expect(modale).toBeTruthy()
       })
-    })
-    test("Then I click on new bill button", () => {
-      const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname })
-      }
-      document.body.innerHTML = BillsUI({ data: { bills } })
-      const bill = new Bill({
-        document, onNavigate, store: null, localStorage: window.localStorage
-      })
-      const newBill = screen.getByTestId('btn-new-bill')
-      const handleClickNewBill = jest.fn(bill.handleClickNewBill())
-      newBill.addEventListener('click', handleClickNewBill)
-      userEvent.click(newBill)
-
-      expect(handleClickNewBill).toHaveBeenCalled()
     })
   })
 })
